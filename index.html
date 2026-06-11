@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <section class="panel panel-form">
+      <div class="panel-header">
+        <h1>CV Builder</h1>
+        <p>Isi form di kiri, lalu preview CV profesional akan terupdate otomatis.</p>
+      </div>
+
+      <form id="cv-form" class="cv-form">
+        <div class="form-section">
+          <h2>Data Diri</h2>
+          <div class="field-grid">
+            <label>
+              <span>Nama Lengkap</span>
+              <input type="text" name="fullName" placeholder="Emmir Fahrezi">
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="nama@email.com">
+            </label>
+            <label>
+              <span>Nomor HP</span>
+              <input type="text" name="phone" placeholder="+62 812 3456 7890">
+            </label>
+            <label>
+              <span>Alamat</span>
+              <input type="text" name="address" placeholder="Jakarta, Indonesia">
+            </label>
+            <label>
+              <span>Link 1</span>
+              <input type="url" name="linkedin" placeholder="https://website-atau-link-bebas.com">
+            </label>
+            <label>
+              <span>Link 2</span>
+              <input type="url" name="github" placeholder="https://link-lainnya.com">
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Profil</h2>
+            <label class="section-toggle">
+              <input type="checkbox" name="showProfile" checked>
+              <span>Tampilkan</span>
+            </label>
+          </div>
+          <label>
+            <span>Deskripsi Profil</span>
+            <textarea name="profile" rows="4" placeholder="Tuliskan ringkasan profil profesional Anda."></textarea>
+          </label>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Pendidikan</h2>
+            <label class="section-toggle">
+              <input type="checkbox" name="showEducation" checked>
+              <span>Tampilkan</span>
+            </label>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Nama Kampus/Sekolah</span>
+              <input type="text" name="school" placeholder="Universitas Indonesia">
+            </label>
+            <label>
+              <span>Program Studi</span>
+              <input type="text" name="major" placeholder="Sistem Informasi">
+            </label>
+            <label>
+              <span>GPA/IPK</span>
+              <input type="text" name="gpa" placeholder="3.85 / 4.00">
+            </label>
+            <label class="field-full">
+              <span>Mata Kuliah Relevan</span>
+              <textarea name="courses" rows="3" placeholder="Pisahkan dengan enter atau koma."></textarea>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Pengalaman Project</h2>
+            <div class="section-actions">
+              <label class="section-toggle">
+                <input type="checkbox" name="showProjects" checked>
+                <span>Tampilkan</span>
+              </label>
+              <button type="button" class="ghost-button" id="add-project">Tambah Project</button>
+            </div>
+          </div>
+          <div id="projects-container" class="dynamic-list"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Sertifikasi</h2>
+            <div class="section-actions">
+              <label class="section-toggle">
+                <input type="checkbox" name="showCertifications" checked>
+                <span>Tampilkan</span>
+              </label>
+              <button type="button" class="ghost-button" id="add-certification">Tambah Sertifikasi</button>
+            </div>
+          </div>
+          <div id="certifications-container" class="dynamic-list"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Pengalaman Organisasi</h2>
+            <div class="section-actions">
+              <label class="section-toggle">
+                <input type="checkbox" name="showOrganizations" checked>
+                <span>Tampilkan</span>
+              </label>
+              <button type="button" class="ghost-button" id="add-organization">Tambah Organisasi</button>
+            </div>
+          </div>
+          <div id="organizations-container" class="dynamic-list"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title-row">
+            <h2>Skill &amp; Teknologi</h2>
+            <label class="section-toggle">
+              <input type="checkbox" name="showSkills" checked>
+              <span>Tampilkan</span>
+            </label>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Hard Skill</span>
+              <textarea name="hardSkills" rows="3" placeholder="Pisahkan dengan enter atau koma."></textarea>
+            </label>
+            <label>
+              <span>Soft Skill</span>
+              <textarea name="softSkills" rows="3" placeholder="Pisahkan dengan enter atau koma."></textarea>
+            </label>
+            <label class="field-full">
+              <span>Tools</span>
+              <textarea name="tools" rows="3" placeholder="Pisahkan dengan enter atau koma."></textarea>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="primary-button" id="download-pdf">Download PDF</button>
+          <button type="reset" class="secondary-button" id="reset-form">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel panel-preview">
+      <div class="panel-header">
+        <h2>Preview CV</h2>
+        <p>Format satu halaman, sederhana, rapi, dan ATS-friendly.</p>
+      </div>
+
+      <div class="preview-stage">
+        <article id="cv-page" class="cv-page">
+          <header class="cv-header">
+            <h1 id="preview-name">NAMA LENGKAP</h1>
+            <p id="preview-links" class="cv-links"></p>
+            <p id="preview-contact" class="cv-contact"></p>
+          </header>
+
+          <section class="cv-section" id="section-profile">
+            <div class="section-heading">
+              <h2>PROFIL</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-profile" class="cv-paragraph"></div>
+          </section>
+
+          <section class="cv-section" id="section-education">
+            <div class="section-heading">
+              <h2>PENDIDIKAN</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-education"></div>
+          </section>
+
+          <section class="cv-section" id="section-projects">
+            <div class="section-heading">
+              <h2>PENGALAMAN PROJECT</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-projects"></div>
+          </section>
+
+          <section class="cv-section" id="section-certifications">
+            <div class="section-heading">
+              <h2>SERTIFIKASI</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-certifications"></div>
+          </section>
+
+          <section class="cv-section" id="section-organizations">
+            <div class="section-heading">
+              <h2>PENGALAMAN ORGANISASI</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-organizations"></div>
+          </section>
+
+          <section class="cv-section" id="section-skills">
+            <div class="section-heading">
+              <h2>SKILL &amp; TEKNOLOGI</h2>
+              <div class="section-line"></div>
+            </div>
+            <div id="preview-skills"></div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <template id="project-template">
+    <div class="dynamic-card" data-type="project">
+      <div class="card-head">
+        <h3>Project</h3>
+        <button type="button" class="remove-button" data-remove>Hapus</button>
+      </div>
+      <div class="field-grid">
+        <label>
+          <span>Nama Project</span>
+          <input type="text" name="projectName" placeholder="CV Builder Website">
+        </label>
+        <label>
+          <span>Role</span>
+          <input type="text" name="projectRole" placeholder="Frontend Developer">
+        </label>
+        <label>
+          <span>Tahun</span>
+          <input type="text" name="projectYear" placeholder="2026">
+        </label>
+        <label class="field-full">
+          <span>Deskripsi Project</span>
+          <textarea name="projectDescription" rows="4" placeholder="Tulis poin deskripsi project, satu baris satu poin."></textarea>
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <template id="certification-template">
+    <div class="dynamic-card" data-type="certification">
+      <div class="card-head">
+        <h3>Sertifikasi</h3>
+        <button type="button" class="remove-button" data-remove>Hapus</button>
+      </div>
+      <div class="field-grid">
+        <label>
+          <span>Nama Sertifikasi</span>
+          <input type="text" name="certificationName" placeholder="Google Data Analytics">
+        </label>
+        <label>
+          <span>Penyelenggara</span>
+          <input type="text" name="certificationIssuer" placeholder="Coursera">
+        </label>
+        <label>
+          <span>Tahun</span>
+          <input type="text" name="certificationYear" placeholder="2025">
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <template id="organization-template">
+    <div class="dynamic-card" data-type="organization">
+      <div class="card-head">
+        <h3>Organisasi</h3>
+        <button type="button" class="remove-button" data-remove>Hapus</button>
+      </div>
+      <div class="field-grid">
+        <label>
+          <span>Nama Organisasi</span>
+          <input type="text" name="organizationName" placeholder="Himpunan Mahasiswa">
+        </label>
+        <label>
+          <span>Posisi</span>
+          <input type="text" name="organizationRole" placeholder="Koordinator Acara">
+        </label>
+        <label>
+          <span>Tahun</span>
+          <input type="text" name="organizationYear" placeholder="2024 - 2025">
+        </label>
+        <label class="field-full">
+          <span>Deskripsi Singkat</span>
+          <textarea name="organizationDescription" rows="4" placeholder="Tulis poin kontribusi, satu baris satu poin."></textarea>
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

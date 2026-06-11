@@ -1,0 +1,415 @@
+:root {
+  --bg: #ececec;
+  --panel: #ffffff;
+  --panel-border: #d6d6d6;
+  --text: #111111;
+  --muted: #5f5f5f;
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.035), transparent 40%),
+    linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 460px) 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.panel-form {
+  padding: 24px;
+}
+
+.panel-preview {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header h1,
+.panel-header h2,
+.panel-header p {
+  margin: 0;
+}
+
+.panel-header p {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.cv-form {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  border: 1px solid #e2e2e2;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fcfcfc;
+}
+
+.form-section h2,
+.card-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.section-title-row,
+.card-head,
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.field-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.93rem;
+}
+
+label span {
+  font-weight: 700;
+}
+
+.section-toggle {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.section-toggle input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border-radius: 4px;
+  padding: 0;
+  box-shadow: none;
+}
+
+.section-toggle span {
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #cfcfcf;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text);
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #333333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.dynamic-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dynamic-card {
+  border: 1px solid #dcdcdc;
+  border-radius: 14px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.ghost-button,
+.remove-button,
+.secondary-button,
+.primary-button {
+  border-radius: 999px;
+  padding: 10px 16px;
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+}
+
+.primary-button {
+  background: #111111;
+  color: #ffffff;
+}
+
+.preview-stage {
+  margin-top: 24px;
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025)),
+    repeating-linear-gradient(
+      45deg,
+      #f4f4f4,
+      #f4f4f4 10px,
+      #efefef 10px,
+      #efefef 20px
+    );
+  border-radius: 16px;
+}
+
+.cv-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 16mm 8mm 18mm;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.cv-header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.cv-header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.cv-links,
+.cv-contact {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+
+.cv-links a {
+  color: #1a5fb4;
+  text-decoration: underline;
+}
+
+.cv-section {
+  margin-bottom: 14px;
+}
+
+.section-heading {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.cv-section h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.section-line {
+  height: 1px;
+  background: #000000;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.cv-entry {
+  margin-bottom: 12px;
+}
+
+.cv-entry:last-child {
+  margin-bottom: 0;
+}
+
+.cv-paragraph {
+  width: 100%;
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 1.4;
+  word-spacing: 0.02em;
+}
+
+.cv-paragraph p {
+  margin: 0;
+}
+
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.entry-subhead {
+  margin: 1px 0 3px;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cv-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.cv-list li {
+  margin-bottom: 2px;
+  text-align: justify;
+}
+
+.skills-row {
+  margin: 0 0 5px;
+  text-align: justify;
+}
+
+.skills-row strong {
+  display: inline;
+  min-width: 0;
+}
+
+.cv-description {
+  margin: 3px 0 0;
+  text-align: justify;
+  line-height: 1.35;
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-preview {
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell,
+  .panel-form,
+  .panel-preview {
+    padding: 16px;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-title-row,
+  .card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .preview-stage {
+    padding: 8px;
+  }
+
+  .cv-page {
+    width: 100%;
+    min-height: auto;
+    padding: 24px 18px;
+  }
+
+  .entry-head {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .skills-row strong {
+    min-width: 0;
+    margin-right: 6px;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .app-shell {
+    padding: 0;
+    display: block;
+  }
+
+  .panel-form,
+  .panel-header:not(.cv-header),
+  .preview-stage {
+    box-shadow: none;
+  }
+}
