@@ -303,18 +303,31 @@ function renderPreview() {
 function createPdfClone() {
   const clone = cvPage.cloneNode(true);
   clone.id = "cv-page-export";
-  clone.style.width = `${cvPage.offsetWidth}px`;
-  clone.style.minHeight = `${cvPage.offsetHeight}px`;
-  clone.style.margin = "0";
+  clone.style.width = `${cvPage.scrollWidth}px`;
+  clone.style.minHeight = `${cvPage.scrollHeight}px`;
+  clone.style.height = "auto";
+  clone.style.margin = "0 auto";
   clone.style.boxShadow = "none";
-  clone.style.position = "absolute";
-  clone.style.left = "-99999px";
-  clone.style.top = "0";
-  clone.style.zIndex = "-1";
   clone.style.background = "#ffffff";
+  clone.style.display = "block";
+  clone.style.visibility = "visible";
 
-  document.body.appendChild(clone);
-  return clone;
+  const wrapper = document.createElement("div");
+  wrapper.id = "cv-page-export-wrapper";
+  wrapper.style.position = "fixed";
+  wrapper.style.left = "0";
+  wrapper.style.top = "0";
+  wrapper.style.width = `${cvPage.scrollWidth}px`;
+  wrapper.style.padding = "0";
+  wrapper.style.margin = "0";
+  wrapper.style.background = "#ffffff";
+  wrapper.style.opacity = "1";
+  wrapper.style.pointerEvents = "none";
+  wrapper.style.zIndex = "-1";
+  wrapper.appendChild(clone);
+
+  document.body.appendChild(wrapper);
+  return wrapper;
 }
 
 async function downloadPdf() {
@@ -322,38 +335,56 @@ async function downloadPdf() {
   downloadButton.disabled = true;
   downloadButton.textContent = "Membuat PDF...";
 
-  let exportNode;
+  let exportWrapper;
 
   try {
     if (document.fonts?.ready) {
       await document.fonts.ready;
     }
 
-    exportNode = createPdfClone();
+    exportWrapper = createPdfClone();
+    const exportNode = exportWrapper.firstElementChild;
 
-    const options = {
-      margin: 0,
-      filename: `${textValue("fullName") || "CV"}-resume.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      pagebreak: { mode: ["css", "legacy"] },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        scrollX: 0,
-        scrollY: 0,
-        width: exportNode.scrollWidth,
-        windowWidth: exportNode.scrollWidth
-      },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    };
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
 
-    await html2pdf().set(options).from(exportNode).save();
+    const canvas = await html2canvas(exportNode, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      width: exportNode.scrollWidth,
+      height: exportNode.scrollHeight,
+      windowWidth: exportNode.scrollWidth,
+      windowHeight: exportNode.scrollHeight
+    });
+
+    const imageData = canvas.toDataURL("image/jpeg", 0.98);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = 210;
+    const pdfHeight = 297;
+    const imageWidth = pdfWidth;
+    const imageHeight = (canvas.height * imageWidth) / canvas.width;
+    let remainingHeight = imageHeight;
+    let position = 0;
+
+    pdf.addImage(imageData, "JPEG", 0, position, imageWidth, imageHeight);
+    remainingHeight -= pdfHeight;
+
+    while (remainingHeight > 0) {
+      position = remainingHeight - imageHeight;
+      pdf.addPage();
+      pdf.addImage(imageData, "JPEG", 0, position, imageWidth, imageHeight);
+      remainingHeight -= pdfHeight;
+    }
+
+    pdf.save(`${textValue("fullName") || "CV"}-resume.pdf`);
   } catch (error) {
     console.error("PDF export failed:", error);
     window.alert("PDF gagal dibuat. Coba refresh halaman lalu download lagi.");
   } finally {
-    exportNode?.remove();
+    exportWrapper?.remove();
     downloadButton.disabled = false;
     downloadButton.textContent = originalLabel;
   }
