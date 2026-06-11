@@ -13,6 +13,7 @@ const previewCertifications = document.getElementById("preview-certifications");
 const previewOrganizations = document.getElementById("preview-organizations");
 const previewSkills = document.getElementById("preview-skills");
 const cvPage = document.getElementById("cv-page");
+const downloadButton = document.getElementById("download-pdf");
 const sectionProfile = document.getElementById("section-profile");
 const sectionEducation = document.getElementById("section-education");
 const sectionProjects = document.getElementById("section-projects");
@@ -299,6 +300,65 @@ function renderPreview() {
   renderSectionVisibility();
 }
 
+function createPdfClone() {
+  const clone = cvPage.cloneNode(true);
+  clone.id = "cv-page-export";
+  clone.style.width = `${cvPage.offsetWidth}px`;
+  clone.style.minHeight = `${cvPage.offsetHeight}px`;
+  clone.style.margin = "0";
+  clone.style.boxShadow = "none";
+  clone.style.position = "absolute";
+  clone.style.left = "-99999px";
+  clone.style.top = "0";
+  clone.style.zIndex = "-1";
+  clone.style.background = "#ffffff";
+
+  document.body.appendChild(clone);
+  return clone;
+}
+
+async function downloadPdf() {
+  const originalLabel = downloadButton.textContent;
+  downloadButton.disabled = true;
+  downloadButton.textContent = "Membuat PDF...";
+
+  let exportNode;
+
+  try {
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
+
+    exportNode = createPdfClone();
+
+    const options = {
+      margin: 0,
+      filename: `${textValue("fullName") || "CV"}-resume.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      pagebreak: { mode: ["css", "legacy"] },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        width: exportNode.scrollWidth,
+        windowWidth: exportNode.scrollWidth
+      },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+
+    await html2pdf().set(options).from(exportNode).save();
+  } catch (error) {
+    console.error("PDF export failed:", error);
+    window.alert("PDF gagal dibuat. Coba refresh halaman lalu download lagi.");
+  } finally {
+    exportNode?.remove();
+    downloadButton.disabled = false;
+    downloadButton.textContent = originalLabel;
+  }
+}
+
 function resetDynamicSections() {
   projectContainer.innerHTML = "";
   certificationContainer.innerHTML = "";
@@ -350,17 +410,7 @@ form.addEventListener("reset", () => {
   }, 0);
 });
 
-document.getElementById("download-pdf").addEventListener("click", () => {
-  const options = {
-    margin: 0,
-    filename: `${textValue("fullName") || "CV"}-resume.pdf`,
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  };
-
-  html2pdf().set(options).from(cvPage).save();
-});
+downloadButton.addEventListener("click", downloadPdf);
 
 resetDynamicSections();
 renderPreview();
