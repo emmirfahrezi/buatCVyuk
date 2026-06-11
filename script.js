@@ -338,6 +338,13 @@ async function downloadPdf() {
   let exportWrapper;
 
   try {
+    const html2canvasLib = window.html2canvas;
+    const jsPDFLib = window.jspdf?.jsPDF;
+
+    if (!html2canvasLib || !jsPDFLib) {
+      throw new Error("Library PDF tidak termuat dengan benar.");
+    }
+
     if (document.fonts?.ready) {
       await document.fonts.ready;
     }
@@ -347,7 +354,7 @@ async function downloadPdf() {
 
     await new Promise((resolve) => window.requestAnimationFrame(resolve));
 
-    const canvas = await html2canvas(exportNode, {
+    const canvas = await html2canvasLib(exportNode, {
       scale: 2,
       useCORS: true,
       backgroundColor: "#ffffff",
@@ -360,8 +367,7 @@ async function downloadPdf() {
     });
 
     const imageData = canvas.toDataURL("image/jpeg", 0.98);
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p", "mm", "a4");
+    const pdf = new jsPDFLib("p", "mm", "a4");
     const pdfWidth = 210;
     const pdfHeight = 297;
     const imageWidth = pdfWidth;
