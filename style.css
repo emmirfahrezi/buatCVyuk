@@ -21,6 +21,17 @@ body {
     linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
 }
 
+.site-footer {
+  padding: 0 24px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
 button,
 input,
 textarea {
@@ -354,6 +365,10 @@ textarea:focus {
   .panel-form,
   .panel-preview {
     padding: 16px;
+  }
+
+  .site-footer {
+    padding: 0 16px 16px;
   }
 
   .field-grid {
